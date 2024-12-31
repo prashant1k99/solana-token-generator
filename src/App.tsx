@@ -1,7 +1,7 @@
 import { SolanaWalletProvider } from "@/hooks/wallet-context.tsx";
 import { ThemeProvider } from "@/hooks/theme-provider";
-import { NetworkSwitcher } from "./components/NetworkSwitcher";
 import { NetworkProvider } from "./hooks/network-context";
+import { Navbar } from "./components/Navbar";
 
 function App() {
 
@@ -9,8 +9,8 @@ function App() {
     <ThemeProvider>
       <NetworkProvider>
         <SolanaWalletProvider>
-          <div className="m-10">
-            <NetworkSwitcher />
+          <div className="my-4 px-4 max-w-7xl max-h-dvh m-auto">
+            <Navbar />
           </div>
         </SolanaWalletProvider>
       </NetworkProvider>

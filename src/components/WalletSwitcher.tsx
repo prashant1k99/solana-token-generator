@@ -37,7 +37,7 @@ export function WalletSwitcher() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size={"lg"} variant={"secondary"}>
+          <Button size={"default"} variant={"secondary"}>
             <img className='h-6 w-6' src={activeWallet?.adapter.icon} />
             {publicKey.toString().slice(0, 4)}...
             {publicKey.toString().slice(-4)}
@@ -60,14 +60,14 @@ export function WalletSwitcher() {
   const connectButton = () => {
     if (connecting) {
       return (
-        <Button disabled size={"lg"}>
+        <Button disabled size={"default"}>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           Connecting
         </Button>
       )
     }
     return (
-      <Button size={"lg"}>
+      <Button size={"default"}>
         Connect Wallet
       </Button>
     )
