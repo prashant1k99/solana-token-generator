@@ -1,12 +1,17 @@
-import { ThemeSwitcher } from "./components/ThemeSwitcher";
-import { ThemeProvider } from "./hooks/theme-provider";
+import { SolanaWalletProvider } from "@/hooks/wallet-context.tsx";
+import { WalletSwitcher } from "@/components/WalletSwitcher";
+import { ThemeProvider } from "@/hooks/theme-provider";
 
 function App() {
 
   return (
     <ThemeProvider>
-      <ThemeSwitcher />
-      Hello World
+      <SolanaWalletProvider>
+        <div className="m-10">
+
+          <WalletSwitcher />
+        </div>
+      </SolanaWalletProvider>
     </ThemeProvider>
   )
 }
