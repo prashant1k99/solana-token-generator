@@ -59,6 +59,7 @@ export function NetworkSwitcher() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Network</SelectLabel>
+          <SelectItem disabled value="mainnet-beta">Mainnet Beta</SelectItem>
           <SelectItem value="devnet">Devent</SelectItem>
           <SelectItem value="testnet">Testnet</SelectItem>
           <SelectItem value="custom">Custom RPC</SelectItem>
