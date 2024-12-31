@@ -7,8 +7,8 @@ import React, {
 } from "react";
 import { clusterApiUrl } from "@solana/web3.js";
 
-// export type Network = 'mainnet-beta' | 'devnet' | 'testnet' | 'custom';
-export type Network = "devnet" | "testnet" | "custom";
+export type Network = 'mainnet-beta' | 'devnet' | 'testnet' | 'custom';
+// export type Network = "devnet" | "testnet" | "custom";
 
 interface NetworkContextType {
   network: Network;
@@ -17,6 +17,7 @@ interface NetworkContextType {
   setNetwork: (network: Network) => void;
   setCustomEndpoint: (endpoint: string) => void;
   checkEndpoint: (url: string) => Promise<boolean>;
+  getExplorerUrl: (path: string) => string;
 }
 
 const NetworkContext = createContext<NetworkContextType | undefined>(undefined);
@@ -25,6 +26,26 @@ interface NetworkProviderProps {
   children: React.ReactNode;
   defaultNetwork?: Network;
   defaultCustomEndpoint?: string;
+}
+
+function getClusterUrlParam(network: Network, endpoint: string): string {
+  let suffix = ''
+  switch (network) {
+    case "custom":
+      suffix = `custom&customUrl=${encodeURIComponent(endpoint)}`
+      break
+    case "mainnet-beta":
+      suffix = ''
+      break
+    case "testnet":
+      suffix = 'testnet'
+      break
+    default:
+      suffix = 'devnet'
+      break
+  }
+
+  return suffix.length ? `?cluster=${suffix}` : ''
 }
 
 export const NetworkProvider: React.FC<NetworkProviderProps> = ({
@@ -88,6 +109,7 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({
     setNetwork: handleSetNetwork,
     setCustomEndpoint: handleSetCustomEndpoint,
     checkEndpoint,
+    getExplorerUrl: (path: string) => `https://explorer.solana.com/${path}${getClusterUrlParam(network, endpoint)}`,
   }), [
     network,
     customEndpoint,
