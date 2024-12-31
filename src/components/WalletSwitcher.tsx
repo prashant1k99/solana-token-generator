@@ -12,6 +12,7 @@ import { RadioGroup } from './ui/radio-group';
 import { Copy, Unplug } from 'lucide-react';
 import { ResponsiveDrawer } from './ResponsiveDrawer';
 import { useState } from 'react';
+import { Separator } from './ui/separator';
 
 export function WalletSwitcher() {
   const { wallets, connected, publicKey, wallet: activeWallet, disconnect, connecting, select } = useWallet();
@@ -90,7 +91,7 @@ export function WalletSwitcher() {
               </div>
             </Button>
           ))}
-          <hr />
+          <Separator />
           {viewMore ?
             wallets.filter(wallet => wallet.readyState != WalletReadyState.Installed).map(wallet => (
               <Button

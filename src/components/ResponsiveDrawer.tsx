@@ -25,11 +25,24 @@ interface ResponsiveDrawerProps {
   children: ReactNode;
   description?: string;
   trigger?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function ResponsiveDrawer({ trigger, title, children, description }: ResponsiveDrawerProps) {
-  const [open, setOpen] = useState(false)
+export function ResponsiveDrawer({
+  trigger,
+  title,
+  children,
+  description,
+  open: controlledOpen,
+  onOpenChange
+}: ResponsiveDrawerProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
+
+  const open = controlledOpen ?? uncontrolledOpen
+  const setOpen = onOpenChange ?? setUncontrolledOpen
+
 
   if (isDesktop) {
     return (

@@ -30,8 +30,6 @@ const WalletProviderInner: React.FC<SolanaWalletProviderProps> = (
     [],
   );
 
-  console.log(wallets);
-
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
