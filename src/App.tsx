@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/hooks/theme-provider";
 import { NetworkProvider } from "./hooks/network-context";
 import { Navbar } from "./components/Navbar";
 import { AirdropTokens } from "./pages/Airdrop";
+import { Toaster } from "@/components/ui/toaster"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
             <Navbar />
             <AirdropTokens />
           </div>
+          <Toaster />
         </SolanaWalletProvider>
       </NetworkProvider>
     </ThemeProvider>

@@ -7,5 +7,6 @@ export async function aidropSOLInWallet({ endpoint, publicKey, amount = 1 }: { e
     publicKey,
     amount * LAMPORTS_PER_SOL,
   );
-  return conn.confirmTransaction(signature, "confirmed");
+  await conn.confirmTransaction(signature, "confirmed");
+  return signature
 }

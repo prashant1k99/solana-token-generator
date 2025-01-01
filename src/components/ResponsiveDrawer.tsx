@@ -27,6 +27,7 @@ interface ResponsiveDrawerProps {
   trigger?: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  isProcessing?: boolean
 }
 
 export function ResponsiveDrawer({
@@ -35,7 +36,8 @@ export function ResponsiveDrawer({
   children,
   description,
   open: controlledOpen,
-  onOpenChange
+  onOpenChange,
+  isProcessing = false
 }: ResponsiveDrawerProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -79,10 +81,14 @@ export function ResponsiveDrawer({
             </DrawerDescription>
           )}
         </DrawerHeader>
-        {children}
+        <div className="px-4">
+          {children}
+        </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button disabled={isProcessing} variant="outline">
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
