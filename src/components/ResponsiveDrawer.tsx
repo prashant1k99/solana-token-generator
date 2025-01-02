@@ -73,24 +73,26 @@ export function ResponsiveDrawer({
         {trigger || <Button variant="outline">Edit</Button>}
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>{title}</DrawerTitle>
-          {description && (
-            <DrawerDescription>
-              {description}
-            </DrawerDescription>
-          )}
-        </DrawerHeader>
-        <div className="px-4">
-          {children}
+        <div className="max-h-[90vh] overflow-y-auto">
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{title}</DrawerTitle>
+            {description && (
+              <DrawerDescription>
+                {description}
+              </DrawerDescription>
+            )}
+          </DrawerHeader>
+          <div className="px-4">
+            {children}
+          </div>
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button disabled={isProcessing} variant="outline">
+                Cancel
+              </Button>
+            </DrawerClose>
+          </DrawerFooter>
         </div>
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button disabled={isProcessing} variant="outline">
-              Cancel
-            </Button>
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
