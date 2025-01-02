@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import { formSchema } from "@/helpers/createTokenZod";
+import { uploadTogithub } from "@/helpers/uploadToGithub";
 
 export function CreateToken() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -34,6 +35,7 @@ export function CreateToken() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    uploadTogithub()
     setIsProcessing(false)
   }
 
