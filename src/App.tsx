@@ -5,17 +5,24 @@ import { Navbar } from "./components/Navbar";
 import { Toaster } from "@/components/ui/toaster"
 import { CreateToken } from "./pages/CreateToken";
 import { AirdropTokens } from "./pages/Airdrop";
+import { Separator } from "./components/ui/separator";
 
 function App() {
   return (
     <ThemeProvider>
       <NetworkProvider>
         <SolanaWalletProvider>
-          <div className="my-4 px-4 max-w-7xl max-h-dvh m-auto">
+          <div className="p-4 max-w-7xl h-full max-h-dvh min-h-dvh m-auto gap-4 flex flex-col">
             <Navbar />
-            <div className="mt-4 flex justify-end gap-4">
+            <Separator />
+            <div className="flex justify-between sm:justify-end gap-4">
               <AirdropTokens />
               <CreateToken />
+            </div>
+            <div className="bg-secondary h-full min-h-full rounded-lg p-2">
+              <p>
+                What's going
+              </p>
             </div>
           </div>
           <Toaster />

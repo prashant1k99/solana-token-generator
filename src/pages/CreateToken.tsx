@@ -92,7 +92,7 @@ export function CreateToken() {
 
   return (
     <ResponsiveDrawer title="Create Token" trigger={
-      <Button>
+      <Button className="w-full sm:w-fit">
         Create Token
       </Button>
     }

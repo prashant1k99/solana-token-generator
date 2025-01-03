@@ -44,11 +44,11 @@ export function WalletSwitcher() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-48 mt-4 '>
-          <DropdownMenuItem onClick={copyWalletAddress} className='flex gap-2 items-center py-2 my-2 px-4 rounded-md cursor-pointer bg-secondary'>
+          <DropdownMenuItem onClick={copyWalletAddress} className='flex gap-2 border border-primary-foreground items-center py-2 my-2 px-4 rounded-md cursor-pointer bg-secondary'>
             <Copy className='h-4 w-4' />
             Copy Address
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={disconnect} className='flex gap-2 items-center py-2 my-2 px-4 rounded-md cursor-pointer bg-secondary hover:bg-destructive'>
+          <DropdownMenuItem onClick={disconnect} className='flex gap-2 border border-primary-foreground items-center py-2 my-2 px-4 rounded-md cursor-pointer bg-secondary hover:bg-destructive'>
             <Unplug className='h-4 w-4' />
             Disconnect
           </DropdownMenuItem>

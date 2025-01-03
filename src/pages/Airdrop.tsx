@@ -61,7 +61,7 @@ export function AirdropTokens() {
       title="Airdrop SOL"
       isProcessing={isProcessing}
       trigger={
-        <Button variant={"secondary"}>Aidrop Tokens</Button>
+        <Button variant={"secondary"} className="w-full sm:w-fit">Aidrop Tokens</Button>
       }
     >
       <form onSubmit={handleAirdropAmount}>
