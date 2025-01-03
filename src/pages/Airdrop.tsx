@@ -73,7 +73,7 @@ export function AirdropTokens() {
         />
         <Button disabled={isProcessing} className="w-full mt-4">
           {isProcessing && (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin" />
           )}
           Airdrop
         </Button>

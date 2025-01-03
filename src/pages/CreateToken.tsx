@@ -21,6 +21,7 @@ import { createToken } from "@/lib/createToken";
 import { useToast } from "@/hooks/use-toast";
 import { useNetwork } from "@/hooks/network-context";
 import { ExplorerLink } from "@/components/ExplorerLink";
+import { Loader2 } from "lucide-react";
 
 export function CreateToken() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -196,7 +197,12 @@ export function CreateToken() {
               </FormItem>
             )}
           />
-          <Button disabled={isProcessing} className="w-full" type="submit">Submit</Button>
+          <Button disabled={isProcessing} className="w-full" type="submit">
+            {isProcessing && (
+              <Loader2 className="h-6 w-6 animate-spin" />
+            )}
+            Submit
+          </Button>
         </form>
       </Form>
     </ResponsiveDrawer>
