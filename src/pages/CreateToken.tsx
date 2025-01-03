@@ -199,6 +199,6 @@ export function CreateToken() {
           <Button disabled={isProcessing} className="w-full" type="submit">Submit</Button>
         </form>
       </Form>
-    </ex>
+    </ResponsiveDrawer>
   )
 }
