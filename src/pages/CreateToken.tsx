@@ -16,10 +16,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import { formSchema } from "@/helpers/createTokenZod";
-import { uploadTogithub } from "@/helpers/uploadToGithub";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { createToken } from "@/lib/createToken";
+import { useToast } from "@/hooks/use-toast";
+import { useNetwork } from "@/hooks/network-context";
+import { ExplorerLink } from "@/components/ExplorerLink";
 
 export function CreateToken() {
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const { publicKey, signTransaction } = useWallet()
+  const { endpoint } = useNetwork();
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,11 +40,54 @@ export function CreateToken() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsProcessing(true)
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    uploadTogithub()
-    setIsProcessing(false)
+
+    if (!publicKey) {
+      setIsProcessing(false)
+      // Show error toast
+      toast({
+        title: "Unable to fetch PublicKey.",
+        description: "Please verify that your wallet is connected properly and try again.",
+        variant: "destructive"
+      })
+      return
+    }
+    if (!signTransaction) {
+      setIsProcessing(false)
+      // Show error toast
+      toast({
+        title: "Unable to process request",
+        description: "Unable to sign transaction, please refresh and try again.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    createToken({
+      formData: values,
+      publicKey,
+      signTransaction,
+      endpoint
+    }).then((data) => {
+      toast({
+        title: "Token created successfully",
+        description: (
+          <div>
+            <ExplorerLink path={`tx/${data.signature}`} label={'View Transaction'} className="btn btn-xs btn-primary" /> |
+            <ExplorerLink path={`tx/${data.mintPublicKey}`} label={'View Token'} className="btn btn-xs btn-primary" />
+          </div>
+        )
+      })
+    }).catch((e) => {
+      let description = "Something went wrong, try again later.";
+      if (e instanceof Error) {
+        description = e.message
+      }
+      toast({
+        title: "Unable to create token.",
+        description,
+        variant: "destructive"
+      })
+    }).finally(() => setIsProcessing(false))
   }
 
   return (
@@ -113,7 +164,7 @@ export function CreateToken() {
                 <FormControl>
                   <Input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/jpg,image/png,image/gif"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
@@ -145,9 +196,9 @@ export function CreateToken() {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">Submit</Button>
+          <Button disabled={isProcessing} className="w-full" type="submit">Submit</Button>
         </form>
       </Form>
-    </ResponsiveDrawer>
+    </ex>
   )
 }

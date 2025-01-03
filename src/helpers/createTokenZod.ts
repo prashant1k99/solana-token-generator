@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
+
 export const formSchema = z.object({
   name: z.string().min(2, {
     message: "Token name should be atleast 2 characters."
@@ -23,7 +25,12 @@ export const formSchema = z.object({
 
   image: z.instanceof(File, {
     message: "Token image is requried"
-  }),
+  }).refine((file) => {
+    return ['image/jpeg', 'image/jpg', 'image/png', "image/gif"].includes(file.type);
+  }, 'Only .jpg, .jpeg, .png and .gif files are accepted')
+    .refine((file) => {
+      return file.size <= MAX_FILE_SIZE;
+    }, `File size should be less than 2MB`),
 
   description: z.string().max(400).optional(),
 })
