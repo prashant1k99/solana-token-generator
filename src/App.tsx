@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { CreateToken } from "./pages/CreateToken";
 import { AirdropTokens } from "./pages/Airdrop";
 import { Separator } from "./components/ui/separator";
+import { GetTokens } from "./pages/GetTokens";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <p>
                 What's going
               </p>
+              <GetTokens />
             </div>
           </div>
           <Toaster />

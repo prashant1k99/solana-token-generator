@@ -60,6 +60,7 @@ export function AirdropTokens() {
     <ResponsiveDrawer
       title="Airdrop SOL"
       isProcessing={isProcessing}
+      smallSize
       trigger={
         <Button variant={"secondary"} className="w-full sm:w-fit">Aidrop Tokens</Button>
       }

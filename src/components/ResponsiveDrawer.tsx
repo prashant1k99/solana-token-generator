@@ -28,6 +28,7 @@ interface ResponsiveDrawerProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   isProcessing?: boolean
+  smallSize?: boolean
 }
 
 export function ResponsiveDrawer({
@@ -37,7 +38,8 @@ export function ResponsiveDrawer({
   description,
   open: controlledOpen,
   onOpenChange,
-  isProcessing = false
+  isProcessing = false,
+  smallSize = false
 }: ResponsiveDrawerProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -52,7 +54,7 @@ export function ResponsiveDrawer({
         <DialogTrigger asChild>
           {trigger || <Button variant="outline">Edit</Button>}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className={`${smallSize ? "sm:max-w-[450px]" : "sm:max-w-3xl"}`}>
           <DialogHeader>
             <DialogTitle className="text-xl">{title}</DialogTitle>
             {description && (
