@@ -1,3 +1,4 @@
+import { TokenData } from "@/components/RenderTokens";
 import {
   AccountLayout,
   TOKEN_2022_PROGRAM_ID,
@@ -49,23 +50,29 @@ export async function fetchTokenMetadata(
 export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
   endpoint: string,
   publicKey: PublicKey,
-}) {
+}): Promise<TokenData[]> {
   const allTokens = await fetchAllUserTokens({
     endpoint,
     publicKey
   })
+
   const tokenMetadataPromise = Promise.all(allTokens.map(async (token) => {
     const metadata = await fetchTokenMetadata({
       mintAddress: token.data.mint,
       endpoint
     })
-    console.log("Metadata: ", metadata)
-    console.log({
-      token,
-      metadata,
-      mintToString: token.data.mint.toString()
-    })
-    return token.data.mint.toString()
+    return {
+      mintPublicKey: token.data.mint.toString(),
+      amount: token.data.amount.toString(),
+      owner: token.data.owner.toString(),
+      metadata: {
+        name: metadata?.name,
+        symbol: metadata?.symbol,
+        additionalMetadata: metadata?.additionalMetadata,
+        uri: metadata?.uri,
+        updateAuthority: metadata?.updateAuthority
+      }
+    } as TokenData
   }))
   return tokenMetadataPromise
 }

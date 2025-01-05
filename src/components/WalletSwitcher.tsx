@@ -13,6 +13,7 @@ import { Copy, Unplug } from 'lucide-react';
 import { ResponsiveDrawer } from './ResponsiveDrawer';
 import { useState } from 'react';
 import { Separator } from './ui/separator';
+import { copyToClipboard } from '@/lib/utils';
 
 export function WalletSwitcher() {
   const { wallets, connected, publicKey, wallet: activeWallet, disconnect, connecting, select } = useWallet();
@@ -21,8 +22,7 @@ export function WalletSwitcher() {
   const copyWalletAddress = () => {
     if (!publicKey) return;
 
-    navigator.clipboard.writeText(publicKey.toString())
-      .catch((err) => console.error('Failed to copy text: ', err));
+    copyToClipboard(publicKey.toString())
   }
 
   if (connected) {

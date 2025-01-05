@@ -29,7 +29,6 @@ export function AirdropTokens() {
       endpoint,
       publicKey,
     }).then((signature) => {
-      console.log(signature)
       toast({
         title: "Transaction sent",
         description: (
