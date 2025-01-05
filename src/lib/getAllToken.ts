@@ -48,25 +48,24 @@ export async function fetchTokenMetadata(
 
 export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
   endpoint: string,
-  publicKey: PublicKey
+  publicKey: PublicKey,
 }) {
   const allTokens = await fetchAllUserTokens({
     endpoint,
     publicKey
   })
-  console.log(allTokens)
-  // Loop on all promises
-
   const tokenMetadataPromise = Promise.all(allTokens.map(async (token) => {
     const metadata = await fetchTokenMetadata({
       mintAddress: token.data.mint,
       endpoint
     })
     console.log("Metadata: ", metadata)
-    return {
+    console.log({
       token,
-      metadata
-    }
+      metadata,
+      mintToString: token.data.mint.toString()
+    })
+    return token.data.mint.toString()
   }))
   return tokenMetadataPromise
 }
