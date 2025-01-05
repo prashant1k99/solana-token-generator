@@ -19,6 +19,7 @@ import {
   DrawerClose,
   DrawerTitle,
 } from "./ui/drawer"
+import { ScrollArea } from "./ui/scroll-area"
 
 interface ResponsiveDrawerProps {
   title: string;
@@ -55,17 +56,21 @@ export function ResponsiveDrawer({
           {trigger || <Button variant="outline">Edit</Button>}
         </DialogTrigger>
         <DialogContent className={`${smallSize ? "sm:max-w-[450px]" : "sm:max-w-3xl"}`}>
-          <DialogHeader>
-            <DialogTitle className="text-xl">{title}</DialogTitle>
-            {description && (
-              <DialogDescription>
-                {description}
-              </DialogDescription>
-            )}
-          </DialogHeader>
-          {children}
+          <ScrollArea className="max-h-[90vh]">
+            <DialogHeader>
+              <DialogTitle className="text-xl">{title}</DialogTitle>
+              {description && (
+                <DialogDescription>
+                  {description}
+                </DialogDescription>
+              )}
+            </DialogHeader>
+            <div className="px-2">
+              {children}
+            </div>
+          </ScrollArea>
         </DialogContent>
-      </Dialog>
+      </Dialog >
     )
   }
 
@@ -75,7 +80,7 @@ export function ResponsiveDrawer({
         {trigger || <Button variant="outline">Edit</Button>}
       </DrawerTrigger>
       <DrawerContent>
-        <div className="max-h-[90vh] overflow-y-auto">
+        <ScrollArea className="max-h-[90vh] overflow-y-auto">
           <DrawerHeader className="text-left">
             <DrawerTitle>{title}</DrawerTitle>
             {description && (
@@ -94,7 +99,7 @@ export function ResponsiveDrawer({
               </Button>
             </DrawerClose>
           </DrawerFooter>
-        </div>
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   )

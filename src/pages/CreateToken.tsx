@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNetwork } from "@/hooks/network-context";
 import { ExplorerLink } from "@/components/ExplorerLink";
 import { Loader2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function CreateToken() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -158,6 +159,27 @@ export function CreateToken() {
           />
           <FormField
             control={form.control}
+            name="supply"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Supply</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="1000000"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormDescription>
+                  How many tokens you want to mint. (Optional, these tokens can be minted from listing as well.)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="image"
             render={({ field }) => (
               <FormItem>
@@ -194,6 +216,33 @@ export function CreateToken() {
                     {...field}
                   />
                 </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="freezeSupply"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-2 border border-destructive">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={!form.watch("supply")}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-destructive">
+                    Freeze Supply
+                  </FormLabel>
+                  <FormDescription>
+                    {!form.watch("supply") ? (
+                      <span className="text-muted-foreground">Set initial supply to enable freezing. </span>
+                    ) : (
+                      <span>Disable future minting. <span className="font-bold text-destructive">This operation is irreversible.</span></span>
+                    )}
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />

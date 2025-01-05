@@ -33,6 +33,8 @@ export const formSchema = z.object({
     }, `File size should be less than 2MB`),
 
   description: z.string().max(400).optional(),
+
+  supply: z.number().optional(),
+
+  freezeSupply: z.boolean().default(false)
 })
-
-

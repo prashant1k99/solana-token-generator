@@ -9,9 +9,12 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import {
+  AuthorityType,
   createAssociatedTokenAccountInstruction,
   createInitializeMetadataPointerInstruction,
   createInitializeMintInstruction,
+  createMintToInstruction,
+  createSetAuthorityInstruction,
   ExtensionType,
   getAssociatedTokenAddress,
   getMintLen,
@@ -75,6 +78,8 @@ export async function createToken({
     decimals: number,
     image: File,
     symbol: string,
+    supply?: number,
+    freezeSupply?: boolean,
   },
   publicKey: PublicKey,
   signTransaction: SignerWalletAdapterProps['signTransaction'],
@@ -218,6 +223,30 @@ export async function createToken({
       createATAInstruction, // 4. Create the associated token account,
       initializeMetadataInstruction, // 5. Initialize metadata
     );
+
+    if (formData.supply) {
+      transaction.add(createMintToInstruction(
+        mint,
+        associatedTokenAccount,
+        publicKey,
+        formData.supply * (10 ** formData.decimals),
+        [],
+        TOKEN_2022_PROGRAM_ID
+      ))
+
+      if (formData.freezeSupply) {
+        transaction.add(
+          createSetAuthorityInstruction(
+            mint,
+            publicKey,
+            AuthorityType.MintTokens,
+            null,
+            [],
+            TOKEN_2022_PROGRAM_ID,
+          )
+        )
+      }
+    }
 
     const { blockhash } = await conn.getLatestBlockhash("confirmed");
     transaction.recentBlockhash = blockhash;
