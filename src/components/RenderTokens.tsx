@@ -20,11 +20,19 @@ interface TokenMetadata {
   updateAuthority?: string,
 }
 
+interface MintInfo {
+  decimals: number,
+  supply: bigint,
+  freezeAuthority?: string,
+  mintAuthority?: string,
+}
+
 export interface TokenData {
   mintPublicKey: string,
   amount: string,
   owner: string,
-  metadata?: TokenMetadata
+  mintInfo: MintInfo,
+  metadata?: TokenMetadata,
 }
 
 export interface RenderTokenListProps {
@@ -56,7 +64,7 @@ export function RenderTokens({ data }: RenderTokenListProps) {
           <TableHead >Name</TableHead>
           <TableHead>Symbol</TableHead>
           <TableHead>Mint Address</TableHead>
-          <TableHead>Current Supply</TableHead>
+          <TableHead>Owned</TableHead>
           <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -73,7 +81,7 @@ export function RenderTokens({ data }: RenderTokenListProps) {
               }
               {token.mintPublicKey}
             </TableCell>
-            <TableCell>{token.amount}</TableCell>
+            <TableCell>{parseFloat(token.amount) / (10 ** token.mintInfo.decimals)}</TableCell>
             <TableCell className="p-2">
               <Button size={"icon"} variant={"secondary"}>
                 <Eye className="w-6 h-6" />

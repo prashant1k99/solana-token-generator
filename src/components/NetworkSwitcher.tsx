@@ -64,7 +64,7 @@ export function NetworkSwitcher() {
           <SelectItem value="testnet">Testnet</SelectItem>
           <SelectItem value="custom">Custom RPC</SelectItem>
         </SelectGroup>
-        <ResponsiveDrawer open={showRPCEditor} onOpenChange={setShowRPCEditor} trigger={
+        <ResponsiveDrawer smallSize open={showRPCEditor} onOpenChange={setShowRPCEditor} trigger={
           <Button className="hidden">
             Show RPC Model
           </Button>

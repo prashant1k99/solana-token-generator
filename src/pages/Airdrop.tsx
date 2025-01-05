@@ -61,7 +61,7 @@ export function AirdropTokens() {
       isProcessing={isProcessing}
       smallSize
       trigger={
-        <Button variant={"secondary"} className="w-full sm:w-fit">Aidrop Tokens</Button>
+        <Button disabled={!publicKey} variant={"secondary"} className="w-full sm:w-fit">Aidrop Tokens</Button>
       }
     >
       <form onSubmit={handleAirdropAmount}>

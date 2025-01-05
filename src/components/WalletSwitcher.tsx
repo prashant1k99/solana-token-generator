@@ -75,7 +75,7 @@ export function WalletSwitcher() {
 
   return (
     <div>
-      <ResponsiveDrawer title="Connect Wallet on Solana to Conitnue" trigger={
+      <ResponsiveDrawer smallSize title="Connect Wallet on Solana to Conitnue" trigger={
         connectButton()
       }>
         <RadioGroup className='pt-4'>

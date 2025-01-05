@@ -65,7 +65,7 @@ export function ResponsiveDrawer({
                 </DialogDescription>
               )}
             </DialogHeader>
-            <div className="px-2">
+            <div className="pt-2 px-1">
               {children}
             </div>
           </ScrollArea>
@@ -79,7 +79,7 @@ export function ResponsiveDrawer({
       <DrawerTrigger asChild>
         {trigger || <Button variant="outline">Edit</Button>}
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className={`${smallSize ? "msx-w-[450px]" : ""}`}>
         <ScrollArea className="max-h-[90vh] overflow-y-auto">
           <DrawerHeader className="text-left">
             <DrawerTitle>{title}</DrawerTitle>

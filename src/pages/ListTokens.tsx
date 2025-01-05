@@ -23,7 +23,7 @@ export function ListTokens() {
   const { endpoint } = useNetwork();
 
   const handleRefresh = useCallback(async () => {
-    if (!publicKey) return;
+    if (!publicKey) return null;
     console.log("Refreshing")
     setIsLoading(true);
     try {
@@ -43,6 +43,14 @@ export function ListTokens() {
   useEffect(() => {
     handleRefresh();
   }, [handleRefresh]);
+
+  if (!publicKey) {
+    return (
+      <div className="w-full h-[50px] flex justify-center items-center">
+        Please connect your wallet first
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4">

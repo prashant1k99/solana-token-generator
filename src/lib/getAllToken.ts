@@ -2,6 +2,7 @@ import { TokenData } from "@/components/RenderTokens";
 import {
   AccountLayout,
   TOKEN_2022_PROGRAM_ID,
+  getMint,
   getTokenMetadata,
 } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
@@ -39,12 +40,15 @@ export async function fetchTokenMetadata(
   console.log(mintAddress.toString());
   const conn = new Connection(endpoint, "confirmed");
 
-  return getTokenMetadata(
-    conn,
-    mintAddress,
-    "confirmed",
-    TOKEN_2022_PROGRAM_ID,
-  );
+  return Promise.all([
+    getTokenMetadata(
+      conn,
+      mintAddress,
+      "confirmed",
+      TOKEN_2022_PROGRAM_ID,
+    ),
+    getMint(conn, mintAddress, "confirmed", TOKEN_2022_PROGRAM_ID)
+  ]);
 }
 
 export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
@@ -56,11 +60,13 @@ export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
     publicKey
   })
 
+  console.log(allTokens[0])
   const tokenMetadataPromise = Promise.all(allTokens.map(async (token) => {
-    const metadata = await fetchTokenMetadata({
+    const [metadata, mintInfo] = await fetchTokenMetadata({
       mintAddress: token.data.mint,
       endpoint
     })
+
     return {
       mintPublicKey: token.data.mint.toString(),
       amount: token.data.amount.toString(),
@@ -70,7 +76,13 @@ export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
         symbol: metadata?.symbol,
         additionalMetadata: metadata?.additionalMetadata,
         uri: metadata?.uri,
-        updateAuthority: metadata?.updateAuthority
+        updateAuthority: metadata?.updateAuthority,
+      },
+      mintInfo: {
+        decimals: mintInfo.decimals,
+        freezeAuthority: mintInfo.freezeAuthority?.toString(),
+        mintAuthority: mintInfo.mintAuthority?.toString(),
+        supply: mintInfo.supply
       }
     } as TokenData
   }))

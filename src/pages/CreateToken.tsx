@@ -94,7 +94,7 @@ export function CreateToken() {
 
   return (
     <ResponsiveDrawer title="Create Token" trigger={
-      <Button className="w-full sm:w-fit">
+      <Button disabled={!publicKey} className="w-full sm:w-fit">
         Create Token
       </Button>
     }
