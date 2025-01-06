@@ -1,4 +1,4 @@
-import { Check, Copy, Eye, Loader2 } from "lucide-react";
+import { Check, Copy, Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import { copyToClipboard } from "@/lib/utils";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { TokenAction } from "./TokenAction";
 
 interface TokenMetadata {
   name?: string,
@@ -83,9 +83,7 @@ export function RenderTokens({ data }: RenderTokenListProps) {
             </TableCell>
             <TableCell>{parseFloat(token.amount) / (10 ** token.mintInfo.decimals)}</TableCell>
             <TableCell className="p-2">
-              <Button size={"icon"} variant={"secondary"}>
-                <Eye className="w-6 h-6" />
-              </Button>
+              <TokenAction data={token} />
             </TableCell>
           </TableRow>
         ))}
