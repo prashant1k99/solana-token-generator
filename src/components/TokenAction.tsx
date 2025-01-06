@@ -15,6 +15,7 @@ import { fetchMetadata, Metadata, PromiseWithStatus, use } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableRow } from "./ui/table"
 import { MintToken } from "@/pages/MintToken"
 import { useWallet } from "@solana/wallet-adapter-react"
+import { TransferToken } from "@/pages/TransferToken"
 
 function TokenMetadataRendered({ url }: { url?: string }) {
   if (!url) {
@@ -104,9 +105,9 @@ export function TokenAction({ data: token }: {
               <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button disabled={isMintingDisabled()} className="w-full">Mint Tokens</Button>
               </MintToken>
-              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+              <TransferToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">Transfer Tokens</Button>
-              </MintToken>
+              </TransferToken>
               <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">Freeze Minting</Button>
               </MintToken>
