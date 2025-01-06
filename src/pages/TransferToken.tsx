@@ -3,7 +3,7 @@ import { ResponsiveDrawer } from "@/components/ResponsiveDrawer";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { transferTokenFormSchema } from "@/helpers/transferTokens";
+import { createTransferTokenFormSchema } from "@/helpers/transferTokens";
 import { useNetwork } from "@/hooks/network-context";
 import { useToast } from "@/hooks/use-toast";
 import { transferToken } from "@/lib/transferToken";
@@ -17,10 +17,11 @@ import { z } from "zod";
 interface MintTokenProps {
   mintAddress: string;
   decimal: number;
+  maxAmount: number;
   children: ReactNode;
 }
 
-export function TransferToken({ mintAddress, children, decimal }: MintTokenProps) {
+export function TransferToken({ mintAddress, children, decimal, maxAmount }: MintTokenProps) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { publicKey, signTransaction } = useWallet()
@@ -28,6 +29,7 @@ export function TransferToken({ mintAddress, children, decimal }: MintTokenProps
   const { endpoint } = useNetwork();
   const { toast } = useToast()
 
+  const transferTokenFormSchema = createTransferTokenFormSchema(maxAmount)
   const form = useForm<z.infer<typeof transferTokenFormSchema>>({
     resolver: zodResolver(transferTokenFormSchema),
   })

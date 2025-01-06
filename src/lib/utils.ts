@@ -64,3 +64,12 @@ export function use<T>(promise: PromiseWithStatus<T>): T {
     throw new Error("Unexpected promise status");
   }
 }
+
+export const formatNumber = (value: number, decimals: number) => {
+  const hasDecimalValue = value % 1 !== 0;
+  return value.toLocaleString('en-US', {
+    minimumFractionDigits: hasDecimalValue ? decimals : 0,
+    maximumFractionDigits: decimals,
+    useGrouping: true
+  });
+};

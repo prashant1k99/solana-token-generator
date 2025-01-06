@@ -11,7 +11,7 @@ import { Eye, Loader2 } from "lucide-react"
 import { TokenData } from "./RenderTokens"
 import { Separator } from "./ui/separator"
 import { Suspense, useEffect, useState } from "react"
-import { fetchMetadata, Metadata, PromiseWithStatus, use } from "@/lib/utils"
+import { fetchMetadata, formatNumber, Metadata, PromiseWithStatus, use } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableRow } from "./ui/table"
 import { MintToken } from "@/pages/MintToken"
 import { useWallet } from "@solana/wallet-adapter-react"
@@ -39,7 +39,6 @@ export function TokenAction({ data: token }: {
 }) {
   const [tokenInfo, setTokenInfo] = useState<Record<string, string | number>>()
   const { publicKey } = useWallet()
-  console.log(token)
 
   const isMintingDisabled = () => {
     if (!publicKey) return true
@@ -53,11 +52,11 @@ export function TokenAction({ data: token }: {
   useEffect(() => {
     if (token) {
       setTokenInfo({
-        "Total Supply": (Number(token.mintInfo.supply) / (10 ** token.mintInfo.decimals)),
+        "Total Supply": formatNumber((Number(token.mintInfo.supply) / (10 ** token.mintInfo.decimals)), token.mintInfo.decimals),
         "Update Authority": token.metadata?.updateAuthority?.toString() || "Unknown",
         "Freeze Authority": token.mintInfo.freezeAuthority || "Unknown",
         "Decimals": token.mintInfo.decimals,
-        "Amount Owned": (parseInt(token.amount) / (10 ** token.mintInfo.decimals)),
+        "Amount Owned": formatNumber(parseInt(token.amount) / (10 ** token.mintInfo.decimals), token.mintInfo.decimals),
         "Mint PublicKey": token.mintPublicKey,
         "Owner": token.owner,
         "Mint Authority": token.mintInfo.mintAuthority || "Unknown"
@@ -106,7 +105,7 @@ export function TokenAction({ data: token }: {
               <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button disabled={isMintingDisabled()} className="w-full">Mint Tokens</Button>
               </MintToken>
-              <TransferToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+              <TransferToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">Transfer Tokens</Button>
               </TransferToken>
               <FreezeToken mintAddress={token.mintPublicKey.toString()}>

@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js"
 import { z } from "zod"
 
-export const transferTokenFormSchema = z.object({
+export const createTransferTokenFormSchema = (maxAmount: number) => z.object({
   toWallet: z.string()
     .min(32, "Invalid wallet address")
     .max(44, "Invalid wallet address")
@@ -9,7 +9,7 @@ export const transferTokenFormSchema = z.object({
       try {
         new PublicKey(address)
         return true
-      } catch (_: Error) {
+      } catch (e) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Invalid Wallet address"
@@ -19,5 +19,5 @@ export const transferTokenFormSchema = z.object({
 
   amount: z.number({
     required_error: "Amount is required"
-  }).min(1),
+  }).min(1).max(maxAmount, { message: `Amount cannot exceed ${maxAmount}` }),
 })
