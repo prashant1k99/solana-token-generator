@@ -17,6 +17,7 @@ import { MintToken } from "@/pages/MintToken"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { TransferToken } from "@/pages/TransferToken"
 import { FreezeToken } from "@/pages/FreezeTokenMinting"
+import { BurnToken } from "@/pages/BurnToken"
 
 function TokenMetadataRendered({ url }: { url?: string }) {
   if (!url) {
@@ -111,9 +112,9 @@ export function TokenAction({ data: token }: {
               <FreezeToken mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">Freeze Minting</Button>
               </FreezeToken>
-              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
-                <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">Destroy Tokens</Button>
-              </MintToken>
+              <BurnToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">Burn Tokens</Button>
+              </BurnToken>
             </div>
           </SheetFooter>
         </SheetContent>

@@ -3,9 +3,10 @@ import { ResponsiveDrawer } from "@/components/ResponsiveDrawer";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createTransferTokenFormSchema } from "@/helpers/transferTokens";
+import { createBurnTokenFormSchema } from "@/helpers/burnTokenFormSchema";
 import { useNetwork } from "@/hooks/network-context";
 import { useToast } from "@/hooks/use-toast";
+import { burnTokens } from "@/lib/burnTokens";
 import { transferToken } from "@/lib/transferToken";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -14,14 +15,14 @@ import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-interface TransferTokenProps {
+interface BurnTokenProps {
   mintAddress: string;
   decimal: number;
   maxAmount: number;
   children: ReactNode;
 }
 
-export function TransferToken({ mintAddress, children, decimal, maxAmount }: TransferTokenProps) {
+export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTokenProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
 
@@ -30,12 +31,12 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
   const { endpoint } = useNetwork();
   const { toast } = useToast()
 
-  const transferTokenFormSchema = createTransferTokenFormSchema(maxAmount)
-  const form = useForm<z.infer<typeof transferTokenFormSchema>>({
-    resolver: zodResolver(transferTokenFormSchema),
+  const burnTokenFormSchema = createBurnTokenFormSchema(maxAmount)
+  const form = useForm<z.infer<typeof burnTokenFormSchema>>({
+    resolver: zodResolver(burnTokenFormSchema),
   })
 
-  function onSubmit(values: z.infer<typeof transferTokenFormSchema>) {
+  function onSubmit(values: z.infer<typeof burnTokenFormSchema>) {
     setIsProcessing(true)
 
     if (!publicKey) {
@@ -59,13 +60,12 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
       return
     }
 
-    transferToken({
+    burnTokens({
       publicKey,
       signTransaction,
-      toWalletKey: values.toWallet,
       amount: values.amount,
       endpoint,
-      mint: mintAddress,
+      mintAddress,
       decimal
     }).then((data) => {
       toast({
@@ -76,7 +76,7 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
           </div>
         )
       })
-      setIsOpen((false))
+      setIsOpen(false)
     }).catch((e) => {
       let description = "Something went wrong, try again later.";
       if (e instanceof Error) {
@@ -92,25 +92,9 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
   }
 
   return (
-    <ResponsiveDrawer open={isOpen} onOpenChange={(val) => setIsOpen(val)} smallSize trigger={children} title="Mint Tokens">
+    <ResponsiveDrawer open={isOpen} onOpenChange={(val) => setIsOpen(val)} smallSize trigger={children} title="Mint Tokens" description="Once burned you cannot reclaim tokens.">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="toWallet"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>To Wallet</FormLabel>
-                <FormControl>
-                  <Input placeholder="Wallet Address" {...field} />
-                </FormControl>
-                <FormDescription>
-                  Wallet Address in which the tokens will be minted to.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="amount"
@@ -120,23 +104,23 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="1000000"
+                    placeholder={`Max: ${maxAmount}`}
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormDescription>
-                  Amount to transfer
+                  Amount to burn
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={isProcessing} className="w-full" type="submit">
+          <Button variant={"destructive"} disabled={isProcessing} className="w-full" type="submit">
             {isProcessing && (
               <Loader2 className="h-6 w-6 animate-spin" />
             )}
-            Submit
+            Burn Tokens
           </Button>
         </form>
       </Form>
