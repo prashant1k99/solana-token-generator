@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableRow } from "./ui/table"
 import { MintToken } from "@/pages/MintToken"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { TransferToken } from "@/pages/TransferToken"
+import { FreezeToken } from "@/pages/FreezeTokenMinting"
 
 function TokenMetadataRendered({ url }: { url?: string }) {
   if (!url) {
@@ -108,9 +109,9 @@ export function TokenAction({ data: token }: {
               <TransferToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">Transfer Tokens</Button>
               </TransferToken>
-              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+              <FreezeToken mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">Freeze Minting</Button>
-              </MintToken>
+              </FreezeToken>
               <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">Destroy Tokens</Button>
               </MintToken>
