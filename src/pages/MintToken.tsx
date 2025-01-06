@@ -6,6 +6,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { mintTokenFormSchema } from "@/helpers/mintTokenZod";
 import { useNetwork } from "@/hooks/network-context";
+import { useRefresh } from "@/hooks/refresh-context";
 import { useToast } from "@/hooks/use-toast";
 import { mintToken } from "@/lib/mintToken";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +28,9 @@ export function MintToken({ mintAddress, children, decimal }: MintTokenProps) {
 
   const { publicKey, signTransaction } = useWallet()
 
-  const { endpoint } = useNetwork();
+  const { endpoint } = useNetwork()
   const { toast } = useToast()
+  const { refresh } = useRefresh()
 
   const form = useForm<z.infer<typeof mintTokenFormSchema>>({
     resolver: zodResolver(mintTokenFormSchema),
@@ -80,6 +82,7 @@ export function MintToken({ mintAddress, children, decimal }: MintTokenProps) {
           </div>
         )
       })
+      refresh()
     }).catch((e) => {
       let description = "Something went wrong, try again later.";
       if (e instanceof Error) {

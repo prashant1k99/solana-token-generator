@@ -28,7 +28,7 @@ export function CreateToken() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { publicKey, signTransaction } = useWallet()
-  const { endpoint } = useNetwork();
+  const { endpoint } = useNetwork()
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof createTokenFormSchema>>({

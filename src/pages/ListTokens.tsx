@@ -2,6 +2,7 @@ import { RenderTokens, TokenData } from "@/components/RenderTokens";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNetwork } from "@/hooks/network-context";
+import { RefreshProvider } from "@/hooks/refresh-context";
 import { fetchAllTokensAndMetadata } from "@/lib/getAllToken";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { RefreshCw } from "lucide-react";
@@ -22,8 +23,8 @@ export function ListTokens() {
   const { publicKey } = useWallet();
   const { endpoint } = useNetwork();
 
-  const handleRefresh = useCallback(async () => {
-    if (!publicKey) return null;
+  const handleRefresh = async (): Promise<void> => {
+    if (!publicKey) return;
     console.log("Refreshing")
     setIsLoading(true);
     try {
@@ -38,11 +39,12 @@ export function ListTokens() {
     } finally {
       setIsLoading(false);
     }
-  }, [publicKey, endpoint]);
+  }
 
+  // Add useEffect for initial load
   useEffect(() => {
     handleRefresh();
-  }, [handleRefresh]);
+  }, [publicKey, endpoint]);
 
   if (!publicKey) {
     return (
@@ -53,17 +55,19 @@ export function ListTokens() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-2 justify-between px-4 py-2 items-center">
-        <span className="font-bold text-xl">All my Tokens</span>
-        <Button size={"icon"} variant={"outline"} onClick={handleRefresh} disabled={isLoading}>
-          <RefreshCw className={`${isLoading ? "animate-spin " : ""} w-4 h-4`} />
-        </Button>
+    <RefreshProvider onRefresh={handleRefresh}>
+      <div className="space-y-4">
+        <div className="flex gap-2 justify-between px-4 py-2 items-center">
+          <span className="font-bold text-xl">All my Tokens</span>
+          <Button size={"icon"} variant={"outline"} onClick={handleRefresh} disabled={isLoading}>
+            <RefreshCw className={`${isLoading ? "animate-spin " : ""} w-4 h-4`} />
+          </Button>
+        </div>
+        <Separator className="bg-primary" />
+        <Suspense fallback={<LoadingState />}>
+          <RenderTokens data={data} />
+        </Suspense>
       </div>
-      <Separator className="bg-primary" />
-      <Suspense fallback={<LoadingState />}>
-        <RenderTokens data={data} />
-      </Suspense>
-    </div>
+    </RefreshProvider>
   );
 }

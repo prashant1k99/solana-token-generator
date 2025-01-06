@@ -2,6 +2,7 @@ import { ExplorerLink } from "@/components/ExplorerLink";
 import { ResponsiveDrawer } from "@/components/ResponsiveDrawer";
 import { Button } from "@/components/ui/button";
 import { useNetwork } from "@/hooks/network-context";
+import { useRefresh } from "@/hooks/refresh-context";
 import { useToast } from "@/hooks/use-toast";
 import { freezeTokenMinting } from "@/lib/freezeTokenMinting";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -23,6 +24,7 @@ export function FreezeToken({
   const { publicKey, signTransaction } = useWallet()
   const { endpoint } = useNetwork()
   const { toast } = useToast()
+  const { refresh } = useRefresh()
 
   const freezeMint = () => {
     setIsProcessing(true)
@@ -62,6 +64,7 @@ export function FreezeToken({
           </div>
         )
       })
+      refresh()
     }).catch((e) => {
       let description = "Something went wrong, try again later.";
       if (e instanceof Error) {

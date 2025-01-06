@@ -5,9 +5,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { createBurnTokenFormSchema } from "@/helpers/burnTokenFormSchema";
 import { useNetwork } from "@/hooks/network-context";
+import { useRefresh } from "@/hooks/refresh-context";
 import { useToast } from "@/hooks/use-toast";
 import { burnTokens } from "@/lib/burnTokens";
-import { transferToken } from "@/lib/transferToken";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Loader2 } from "lucide-react";
@@ -28,8 +28,9 @@ export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTok
 
   const { publicKey, signTransaction } = useWallet()
 
-  const { endpoint } = useNetwork();
+  const { endpoint } = useNetwork()
   const { toast } = useToast()
+  const { refresh } = useRefresh()
 
   const burnTokenFormSchema = createBurnTokenFormSchema(maxAmount)
   const form = useForm<z.infer<typeof burnTokenFormSchema>>({
@@ -77,6 +78,7 @@ export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTok
         )
       })
       setIsOpen(false)
+      refresh()
     }).catch((e) => {
       let description = "Something went wrong, try again later.";
       if (e instanceof Error) {

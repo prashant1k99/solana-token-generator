@@ -5,6 +5,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { createTransferTokenFormSchema } from "@/helpers/transferTokens";
 import { useNetwork } from "@/hooks/network-context";
+import { useRefresh } from "@/hooks/refresh-context";
 import { useToast } from "@/hooks/use-toast";
 import { transferToken } from "@/lib/transferToken";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +28,9 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
 
   const { publicKey, signTransaction } = useWallet()
 
-  const { endpoint } = useNetwork();
+  const { endpoint } = useNetwork()
   const { toast } = useToast()
+  const { refresh } = useRefresh()
 
   const transferTokenFormSchema = createTransferTokenFormSchema(maxAmount)
   const form = useForm<z.infer<typeof transferTokenFormSchema>>({
@@ -77,6 +79,7 @@ export function TransferToken({ mintAddress, children, decimal, maxAmount }: Tra
         )
       })
       setIsOpen((false))
+      refresh()
     }).catch((e) => {
       let description = "Something went wrong, try again later.";
       if (e instanceof Error) {
