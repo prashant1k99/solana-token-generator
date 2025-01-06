@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Eye, Loader2 } from "lucide-react"
+import { ArrowLeftRight, Eye, Flame, Loader2, Snowflake } from "lucide-react"
 import { TokenData } from "./RenderTokens"
 import { Separator } from "./ui/separator"
 import { Suspense, useEffect, useState } from "react"
@@ -106,15 +106,25 @@ export function TokenAction({ data: token }: {
               <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
                 <Button disabled={isMintingDisabled()} className="w-full">Mint Tokens</Button>
               </MintToken>
-              <TransferToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
-                <Button variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">Transfer Tokens</Button>
-              </TransferToken>
-              <FreezeToken mintAddress={token.mintPublicKey.toString()}>
-                <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">Freeze Minting</Button>
-              </FreezeToken>
-              <BurnToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
-                <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">Burn Tokens</Button>
-              </BurnToken>
+              <div className="flex gap-2">
+                <TransferToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                  <Button size={"icon"} variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">
+                    <ArrowLeftRight className="w-6 h-6" />
+                    Transfer
+                  </Button>
+                </TransferToken>
+                <FreezeToken mintAddress={token.mintPublicKey.toString()}>
+                  <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">
+                    <Snowflake className="w-6 h-6" />
+                    Freeze
+                  </Button>
+                </FreezeToken>
+                <BurnToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                  <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">
+                    <Flame className="w-6 h-6" /> Burn
+                  </Button>
+                </BurnToken>
+              </div>
             </div>
           </SheetFooter>
         </SheetContent>
