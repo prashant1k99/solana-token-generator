@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
 
-export const formSchema = z.object({
+export const createTokenFormSchema = z.object({
   name: z.string().min(2, {
     message: "Token name should be atleast 2 characters."
   }).max(40, {

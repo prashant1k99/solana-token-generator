@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
-import { formSchema } from "@/helpers/createTokenZod";
+import { createTokenFormSchema } from "@/helpers/createTokenZod";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { createToken } from "@/lib/createToken";
 import { useToast } from "@/hooks/use-toast";
@@ -31,8 +31,8 @@ export function CreateToken() {
   const { endpoint } = useNetwork();
   const { toast } = useToast()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createTokenFormSchema>>({
+    resolver: zodResolver(createTokenFormSchema),
     defaultValues: {
       name: "",
       symbol: "",
@@ -40,7 +40,7 @@ export function CreateToken() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof createTokenFormSchema>) {
     setIsProcessing(true)
 
     if (!publicKey) {
@@ -74,8 +74,8 @@ export function CreateToken() {
         title: "Token created successfully",
         description: (
           <div>
-            <ExplorerLink path={`tx/${data.signature}`} label={'View Transaction'} className="btn btn-xs btn-primary" /> |
-            <ExplorerLink path={`tx/${data.mintPublicKey}`} label={'View Token'} className="btn btn-xs btn-primary" />
+            <ExplorerLink path={`tx/${data.signature}`} label={'View Transaction'} className="btn btn-xs btn-primary" /> | {" "}
+            <ExplorerLink path={`account/${data.mintPublicKey}`} label={'View Token'} className="btn btn-xs btn-primary" />
           </div>
         )
       })

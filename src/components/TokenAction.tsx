@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
@@ -52,11 +51,11 @@ export function TokenAction({ data: token }: {
   useEffect(() => {
     if (token) {
       setTokenInfo({
-        "Total Supply": token.mintInfo.supply.toString(),
+        "Total Supply": (Number(token.mintInfo.supply) / (10 ** token.mintInfo.decimals)),
         "Update Authority": token.metadata?.updateAuthority?.toString() || "Unknown",
         "Freeze Authority": token.mintInfo.freezeAuthority || "Unknown",
         "Decimals": token.mintInfo.decimals,
-        "Amount Owned": token.amount,
+        "Amount Owned": (parseInt(token.amount) / (10 ** token.mintInfo.decimals)),
         "Mint PublicKey": token.mintPublicKey,
         "Owner": token.owner,
         "Mint Authority": token.mintInfo.mintAuthority || "Unknown"
@@ -72,7 +71,7 @@ export function TokenAction({ data: token }: {
             <Eye className="w-6 h-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent className="flex flex-col gap-4 min-w-[600px]" side={"right"}>
+        <SheetContent className="flex flex-col gap-4 min-w-[650px]" side={"right"}>
           <SheetHeader>
             <SheetTitle>
               {token.metadata?.name || "Unknown Token"}
@@ -102,12 +101,18 @@ export function TokenAction({ data: token }: {
           </Table>
           <SheetFooter>
             <div className="flex flex-col w-full gap-2">
-              <MintToken mintAddress={token.mintPublicKey.toString()}>
-                <Button disabled={isMintingDisabled()} className="w-full" type="submit">Mint Tokens</Button>
+              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                <Button disabled={isMintingDisabled()} className="w-full">Mint Tokens</Button>
               </MintToken>
-              <SheetClose asChild>
-                <Button variant={"secondary"} className="w-full">Close</Button>
-              </SheetClose>
+              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                <Button variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">Transfer Tokens</Button>
+              </MintToken>
+              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                <Button variant={"outline"} disabled={isMintingDisabled()} className="w-full hover:bg-destructive active:bg-destructive border-destructive">Freeze Minting</Button>
+              </MintToken>
+              <MintToken decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">Destroy Tokens</Button>
+              </MintToken>
             </div>
           </SheetFooter>
         </SheetContent>
