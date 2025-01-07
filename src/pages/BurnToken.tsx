@@ -1,6 +1,7 @@
 import { ExplorerLink } from "@/components/ExplorerLink";
 import { ResponsiveDrawer } from "@/components/ResponsiveDrawer";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createBurnTokenFormSchema } from "@/helpers/burnTokenFormSchema";
@@ -20,9 +21,10 @@ interface BurnTokenProps {
   decimal: number;
   maxAmount: number;
   children: ReactNode;
+  destinationAccount: string;
 }
 
-export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTokenProps) {
+export function BurnToken({ mintAddress, children, decimal, maxAmount, destinationAccount }: BurnTokenProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
 
@@ -67,7 +69,9 @@ export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTok
       amount: values.amount,
       endpoint,
       mintAddress,
-      decimal
+      decimal,
+      deleteTokenAccount: values.deleteTokenAccount,
+      destinationAccount
     }).then((data) => {
       toast({
         title: "Token transfer successfully",
@@ -115,6 +119,29 @@ export function BurnToken({ mintAddress, children, decimal, maxAmount }: BurnTok
                   Amount to burn
                 </FormDescription>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="deleteTokenAccount"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-2 border border-destructive">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={!form.watch("amount")}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-destructive">
+                    Delete Token Account
+                  </FormLabel>
+                  <FormDescription>
+                    <span>Delete Token account, you will be charged to create another token account. <span className="font-bold text-destructive">This operation is irreversible.</span></span>
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />

@@ -29,7 +29,7 @@ interface MintInfo {
 
 export interface TokenData {
   mintPublicKey: string,
-  amount: string,
+  amount: number,
   owner: string,
   mintInfo: MintInfo,
   metadata?: TokenMetadata,
@@ -81,7 +81,7 @@ export function RenderTokens({ data }: RenderTokenListProps) {
               }
               {token.mintPublicKey}
             </TableCell>
-            <TableCell>{formatNumber(parseFloat(token.amount) / (10 ** token.mintInfo.decimals), token.mintInfo.decimals)}</TableCell>
+            <TableCell>{formatNumber(token.amount / (10 ** token.mintInfo.decimals), token.mintInfo.decimals)}</TableCell>
             <TableCell className="p-2">
               <TokenAction data={token} />
             </TableCell>

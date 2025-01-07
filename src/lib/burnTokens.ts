@@ -1,4 +1,4 @@
-import { createBurnInstruction, getAssociatedTokenAddress, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token"
+import { createBurnInstruction, createCloseAccountInstruction, getAssociatedTokenAddress, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token"
 import { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import { Connection, PublicKey, SendTransactionError, Transaction } from "@solana/web3.js"
 
@@ -9,6 +9,8 @@ export async function burnTokens({
   signTransaction,
   amount,
   decimal,
+  deleteTokenAccount,
+  destinationAccount,
 }: {
   endpoint: string,
   mintAddress: string,
@@ -16,6 +18,8 @@ export async function burnTokens({
   signTransaction: SignerWalletAdapterProps['signTransaction'],
   amount: number,
   decimal: number,
+  deleteTokenAccount: boolean,
+  destinationAccount: string,
 }) {
   const conn = new Connection(endpoint, "confirmed");
 
@@ -25,6 +29,10 @@ export async function burnTokens({
   const tokenAccount = await getAssociatedTokenAddress(mint, publicKey, false, TOKEN_2022_PROGRAM_ID)
 
   transaction.add(createBurnInstruction(tokenAccount, mint, publicKey, BigInt(amount * (10 ** decimal)), undefined, TOKEN_2022_PROGRAM_ID))
+
+  if (deleteTokenAccount) {
+    transaction.add(createCloseAccountInstruction(tokenAccount, new PublicKey(destinationAccount), publicKey, [], TOKEN_2022_PROGRAM_ID))
+  }
 
   try {
     const { blockhash } = await conn.getLatestBlockhash("confirmed");

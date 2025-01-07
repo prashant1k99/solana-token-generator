@@ -57,7 +57,7 @@ export function TokenAction({ data: token }: {
         "Update Authority": token.metadata?.updateAuthority?.toString() || "Unknown",
         "Freeze Authority": token.mintInfo.freezeAuthority || "Unknown",
         "Decimals": token.mintInfo.decimals,
-        "Amount Owned": formatNumber(parseInt(token.amount) / (10 ** token.mintInfo.decimals), token.mintInfo.decimals),
+        "Amount Owned": formatNumber(token.amount / (10 ** token.mintInfo.decimals), token.mintInfo.decimals),
         "Mint PublicKey": token.mintPublicKey,
         "Owner": token.owner,
         "Mint Authority": token.mintInfo.mintAuthority || "Unknown"
@@ -107,8 +107,8 @@ export function TokenAction({ data: token }: {
                 <Button disabled={isMintingDisabled()} className="w-full">Mint Tokens</Button>
               </MintToken>
               <div className="flex gap-2">
-                <TransferToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
-                  <Button size={"icon"} variant={"secondary"} disabled={parseInt(token.amount) <= 0} className="w-full">
+                <TransferToken maxAmount={token.amount / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                  <Button size={"icon"} variant={"secondary"} disabled={token.amount <= 0} className="w-full">
                     <ArrowLeftRight className="w-6 h-6" />
                     Transfer
                   </Button>
@@ -119,8 +119,8 @@ export function TokenAction({ data: token }: {
                     Freeze
                   </Button>
                 </FreezeToken>
-                <BurnToken maxAmount={parseInt(token.amount) / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
-                  <Button variant={"destructive"} disabled={parseInt(token.amount) <= 0} className="w-full">
+                <BurnToken destinationAccount={token.mintInfo.mintAuthority?.toString() || token.mintInfo.freezeAuthority?.toString() || token.metadata?.updateAuthority || "8B4jLpEPs2vMFZqFbcG9CEMXKitGuVDv1TMPHBqxf4yx"} maxAmount={token.amount / (10 ** token.mintInfo.decimals)} decimal={token.mintInfo.decimals} mintAddress={token.mintPublicKey.toString()}>
+                  <Button variant={"destructive"} disabled={token.amount <= 0} className="w-full">
                     <Flame className="w-6 h-6" /> Burn
                   </Button>
                 </BurnToken>

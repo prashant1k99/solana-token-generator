@@ -60,31 +60,34 @@ export async function fetchAllTokensAndMetadata({ endpoint, publicKey }: {
     publicKey
   })
 
-  console.log(allTokens[0])
-  const tokenMetadataPromise = Promise.all(allTokens.map(async (token) => {
-    const [metadata, mintInfo] = await fetchTokenMetadata({
-      mintAddress: token.data.mint,
-      endpoint
-    })
+  const tokenMetadataPromise = Promise.all(allTokens
+    .map(async (token) => {
+      const [metadata, mintInfo] = await fetchTokenMetadata({
+        mintAddress: token.data.mint,
+        endpoint
+      })
 
-    return {
-      mintPublicKey: token.data.mint.toString(),
-      amount: token.data.amount.toString(),
-      owner: token.data.owner.toString(),
-      metadata: {
-        name: metadata?.name,
-        symbol: metadata?.symbol,
-        additionalMetadata: metadata?.additionalMetadata,
-        uri: metadata?.uri,
-        updateAuthority: metadata?.updateAuthority,
-      },
-      mintInfo: {
-        decimals: mintInfo.decimals,
-        freezeAuthority: mintInfo.freezeAuthority?.toString(),
-        mintAuthority: mintInfo.mintAuthority?.toString(),
-        supply: mintInfo.supply
-      }
-    } as TokenData
-  }))
-  return tokenMetadataPromise
+      return {
+        mintPublicKey: token.data.mint.toString(),
+        amount: Number(token.data.amount),
+        owner: token.data.owner.toString(),
+        metadata: {
+          name: metadata?.name,
+          symbol: metadata?.symbol,
+          additionalMetadata: metadata?.additionalMetadata,
+          uri: metadata?.uri,
+          updateAuthority: metadata?.updateAuthority,
+        },
+        mintInfo: {
+          decimals: mintInfo.decimals,
+          freezeAuthority: mintInfo.freezeAuthority?.toString(),
+          mintAuthority: mintInfo.mintAuthority?.toString(),
+          supply: mintInfo.supply
+        }
+      } as TokenData
+    }))
+  return (await tokenMetadataPromise).filter(token => {
+    if (token.amount == 0 && (!token.mintInfo.mintAuthority || token.mintInfo.mintAuthority != publicKey.toString())) return false
+    return true
+  })
 }

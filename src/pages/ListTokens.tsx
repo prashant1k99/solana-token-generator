@@ -6,7 +6,7 @@ import { RefreshProvider } from "@/hooks/refresh-context";
 import { fetchAllTokensAndMetadata } from "@/lib/getAllToken";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { RefreshCw } from "lucide-react";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 // Create a loading state component
 function LoadingState() {

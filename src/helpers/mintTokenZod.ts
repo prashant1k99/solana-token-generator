@@ -11,7 +11,7 @@ export const mintTokenFormSchema = z.object({
       try {
         new PublicKey(address)
         return true
-      } catch (_: Error) {
+      } catch (e) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Invalid Wallet address"
