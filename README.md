@@ -1,52 +1,46 @@
-# React + TypeScript + Vite
+# SPL Token Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Using this application, anyone can build there own SPL 2022 Solana Tokens by simply connecting there Wallet.
 
-Currently, two official plugins are available:
+### Dependencies:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  [React (Vite)](https://vite.dev/guide/)
+2.  [TailwindCSS](https://tailwindcss.com/)
+3.  [ShadCN UI](https://ui.shadcn.com/)
+4.  [@solana/web3.js](https://www.npmjs.com/package/@solana/web3.js)
+5.  [@solana/spl-token](https://spl.solana.com/token)
 
-## Expanding the ESLint configuration
+### Demo:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+For live demo, [Deployed Netlify instance](https://stg-prashant.netlify.app/)
 
-- Configure the top-level `parserOptions` property like this:
+### Usage:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+1. Fork and star repository
+   ![](./asset/fork.png)
+
+2. Clone the repository in local:
+
+```sh
+git clone https://github.com/prashant1k99/solana-token-generator.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+3. Switch to project repository:
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+```sh
+cd solana-token-generator
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
+4. Install all npm dependencies:
+
+```sh
+npm install
+```
+
+5. To run local instance:
+
+```sh
+npm run dev
 ```
 
 # Note: the production preview has issue of Buffer is not defined. To solve that refer to [Github discussion](https://github.com/vitejs/vite/discussions/2785#discussioncomment-687395)
