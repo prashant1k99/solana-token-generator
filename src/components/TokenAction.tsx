@@ -85,7 +85,7 @@ export function TokenAction({ data: token }: {
           <Separator className="bg-primary" />
           <Suspense fallback={
             <div className="w-full h-[50px] flex justify-center items-center">
-              < Loader2 className="h-10 w-10 animate-spin" />
+              <Loader2 className="h-10 w-10 animate-spin" />
             </div>
           }>
             <TokenMetadataRendered url={token.metadata?.uri} />
