@@ -131,7 +131,6 @@ export function BurnToken({ mintAddress, children, decimal, maxAmount, destinati
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    disabled={!form.watch("amount")}
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
