@@ -42,5 +42,3 @@ npm install
 ```sh
 npm run dev
 ```
-
-# Note: the production preview has issue of Buffer is not defined. To solve that refer to [Github discussion](https://github.com/vitejs/vite/discussions/2785#discussioncomment-687395)

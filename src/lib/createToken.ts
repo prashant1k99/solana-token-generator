@@ -285,6 +285,5 @@ export async function createToken({
       console.log(await error.getLogs(conn));
       throw new Error("Error while processing transaction: " + error.message);
     } else throw error
-
   }
 }
