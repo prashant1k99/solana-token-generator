@@ -23,7 +23,6 @@ interface MintTokenProps {
 }
 
 export function MintToken({ mintAddress, children, decimal }: MintTokenProps) {
-  console.log("Minting: ", mintAddress)
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { publicKey, signTransaction } = useWallet()

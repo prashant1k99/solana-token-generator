@@ -37,7 +37,6 @@ export async function fetchAllUserTokens({
 export async function fetchTokenMetadata(
   { mintAddress, endpoint }: { mintAddress: PublicKey; endpoint: string },
 ) {
-  console.log(mintAddress.toString());
   const conn = new Connection(endpoint, "confirmed");
 
   return Promise.all([

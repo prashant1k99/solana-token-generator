@@ -25,7 +25,6 @@ export function ListTokens() {
 
   const handleRefresh = async (): Promise<void> => {
     if (!publicKey) return;
-    console.log("Refreshing")
     setIsLoading(true);
     try {
       const fetchedData = await fetchAllTokensAndMetadata({
@@ -33,7 +32,6 @@ export function ListTokens() {
         endpoint,
       });
       setData(fetchedData);
-      console.log(fetchedData);
     } catch (e) {
       console.error(e);
     } finally {

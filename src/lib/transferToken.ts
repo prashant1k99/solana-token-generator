@@ -42,7 +42,6 @@ export async function transferToken({
   try {
     await getAccount(conn, toAssociatedTokenAddress, "confirmed", TOKEN_2022_PROGRAM_ID)
   } catch (e) {
-    console.log(e)
     transaction.add(
       createAssociatedTokenAccountInstruction(
         publicKey, // payer

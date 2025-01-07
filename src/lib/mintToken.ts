@@ -36,7 +36,6 @@ export async function mintToken({
   try {
     await getAccount(conn, associatedTokenAccount, "confirmed", TOKEN_2022_PROGRAM_ID)
   } catch (e) {
-    console.log(e)
     transaction.add(
       createAssociatedTokenAccountInstruction(
         publicKey, // payer
